@@ -34,7 +34,3 @@ def install_packages(files,extra_pkgs):
         sys.exit(1)
 
     print(f"Total time: {time.time() - task_start:.2f} seconds")
-
-if __name__ == "__main__":
-        install_packages(["presets/casual.txt", "presets/development.txt", "presets/gaming.txt"])
-

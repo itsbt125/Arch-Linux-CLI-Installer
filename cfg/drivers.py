@@ -12,9 +12,9 @@ def cpu_microcode_packages():
             print("Intel CPU detected, installing intel-ucode.")
             return["intel-ucode"]
         else:
-            return
+            return[]
     except:
-        return
+        return[]
     
 def gpu_driver_packages():
     print("Detecting GPU model for appropriate driver package installation.")
@@ -23,7 +23,7 @@ def gpu_driver_packages():
         lspci = subprocess.check_output(["lspci"], text=True).lower()
     except:
         print("Failed to run lspci, skipping GPU detection.")
-        return
+        return[]
 
     if "nvidia" in lspci:
         print("NVIDIA GPU detected.")
@@ -34,4 +34,3 @@ def gpu_driver_packages():
     # Intel support is NOT added yet.
     print(f"Requesting {drivers} to be installed.")
     return drivers
-    

@@ -59,7 +59,7 @@ def select_from_list(prompt, command, default_val):  # I decided to do this as d
 def start_install():
     print("Welcome to the Arch Linux installer!")
 
-    # Network Connection Tets
+    # Network Connection Test
     if not check_internet():
         print("[!] No internet connection.")
         if not wifi.connect_to_wifi():
@@ -154,7 +154,7 @@ def start_install():
         return
 
     # Install Packages (Base + User Presets + Drivers)
-    drivers_list = drivers.get_cpu_microcode() + drivers.get_gpu_drivers()
+    drivers_list = drivers.cpu_microcode_packages() + drivers.gpu_driver_packages()
     installer.install_packages(selected_presets, extra_pkgs=drivers_list)
     
     # Configuration

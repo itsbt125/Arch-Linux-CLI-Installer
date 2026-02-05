@@ -110,9 +110,9 @@ def start_install():
     )
 
     preset_map = {
-        "1": "cfg/presets/casual.txt",
-        "2": "cfg/presets/gaming.txt",
-        "3": "cfg/presets/development.txt"
+        "1": "pacstrap/presets/casual.txt",
+        "2": "pacstrap/presets/gaming.txt",
+        "3": "pacstrap/presets/development.txt"
     }
     
     selected_presets = []

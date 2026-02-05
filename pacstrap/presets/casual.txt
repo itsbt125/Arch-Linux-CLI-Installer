@@ -1,0 +1,9 @@
+firefox
+spotify-launcher
+vlc
+libreoffice-fresh
+thunderbird
+obsidian
+timeshift
+discord
+nano

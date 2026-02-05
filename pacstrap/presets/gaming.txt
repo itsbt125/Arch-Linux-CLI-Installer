@@ -1,0 +1,9 @@
+firefox
+steam
+wine
+winetricks
+openrgb
+obs-studio
+discord
+spotify-launcher
+gamemode

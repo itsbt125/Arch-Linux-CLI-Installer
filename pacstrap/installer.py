@@ -1,6 +1,4 @@
-backup
-
-#installer.py
+#installer/pacstrap/installer.py
 import os
 import subprocess
 import time

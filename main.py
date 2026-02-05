@@ -21,7 +21,7 @@ def get_valid_options(command):
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         return set(result.stdout.strip().splitlines())
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError:   
         return set()
 
 def select_from_list(prompt, command, default_val):  # I decided to do this as down the road I'm probably going to have a bunch of lists I need to select from

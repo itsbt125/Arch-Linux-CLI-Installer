@@ -1,5 +1,4 @@
-#installer/pacstrap/nstaller.py
-
+#installer.py
 import os
 import subprocess
 import time
@@ -18,16 +17,28 @@ def install_packages(files,extra_pkgs):
     if not full_list:
         print("No packages selected.")
         return
+    
+    sed_snip = r'/^# *\[multilib\]/,/^# *Include/ s/^# *//'
+    sed_cmd = [
+        "sed",
+        "-i",
+        sed_snip,
+        "/mnt/etc/pacman.conf"
+    ]
+    try:
+        subprocess.run(sed_cmd,check=True)
+    except subprocess.CalledProcessError:
+        print("Error enabling multilib, terminating installation process.")
+        sys.exit(1)
 
     print(f"Starting install of {len(full_list)} packages.")
 
     # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
     cmd = ["pacstrap", "-K", "/mnt"] + full_list
     task_start = time.time()
-
     try:
         subprocess.run(cmd, check=True)
-        print("\nPackage installation completed.")
+        print("\nInstallation complete.")
     except subprocess.CalledProcessError:
         print("\nError installing, pacstrap failed.")
         sys.exit(1)

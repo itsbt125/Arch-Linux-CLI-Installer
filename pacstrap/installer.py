@@ -4,7 +4,7 @@ import subprocess
 import time
 import sys
 
-def install_packages(files):
+def install_packages(files,extra_pkgs=""):
     base_pkgs = ["linux", "linux-headers", "linux-firmware", "base","sudo", "nano", "grub", "efibootmgr","networkmanager", "plasma-nm", "pipewire", "pipewire-alsa","sddm", "plasma-meta", "konsole", "dolphin", "firefox"] # Required packages
     custom_pkgs = []
     for file in files:
@@ -12,7 +12,7 @@ def install_packages(files):
             with open(file, "r") as f:
                 custom_pkgs.extend(f.read().splitlines())
                 
-    full_list = list(set(base_pkgs + [p.strip() for p in custom_pkgs if p.strip()]))
+    full_list = list(set(base_pkgs + [p.strip() for p in custom_pkgs if p.strip()] + extra_pkgs))
 
     if not full_list:
         print("No packages selected.")

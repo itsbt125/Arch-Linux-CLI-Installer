@@ -22,6 +22,8 @@ def install_packages(files,extra_pkgs):
     
     # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
     cmd = ["pacstrap", "-K", "/mnt"] + full_list
+    print(cmd)
+    sys.exit(1) #just for testing to see what the final command is
     task_start = time.time()
     
     try:

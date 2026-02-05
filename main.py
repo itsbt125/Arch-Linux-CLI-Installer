@@ -110,9 +110,9 @@ def start_install():
     )
 
     preset_map = {
-        "1": "presets/casual.txt",
-        "2": "presets/gaming.txt",
-        "3": "presets/development.txt"
+        "1": "cfg/presets/casual.txt",
+        "2": "cfg/presets/gaming.txt",
+        "3": "cfg/presets/development.txt"
     }
     
     selected_presets = []

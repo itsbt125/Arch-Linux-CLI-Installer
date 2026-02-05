@@ -18,6 +18,18 @@ def install_packages(files,extra_pkgs):
         print("No packages selected.")
         return
     
+    
+
+    print(f"Starting install of {len(full_list)} packages.")
+
+    # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
+    try:
+        subprocess.run("pacstrap","-K","/mnt","linux",check=True)
+    except subprocess.CalledProcessError:
+        print("Error installing critical module, pacstrap failed and install is terminating.")
+        sys.exit(1)
+    
+    # We need to install something that's required first so we can activate multilib (create the path)
     sed_snip = r'/^# *\[multilib\]/,/^# *Include/ s/^# *//'
     sed_cmd = [
         "sed",
@@ -30,10 +42,7 @@ def install_packages(files,extra_pkgs):
     except subprocess.CalledProcessError:
         print("Error enabling multilib, terminating installation process.")
         sys.exit(1)
-
-    print(f"Starting install of {len(full_list)} packages.")
-
-    # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
+    
     cmd = ["pacstrap", "-K", "/mnt"] + full_list
     task_start = time.time()
     try:

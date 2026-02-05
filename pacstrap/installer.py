@@ -1,4 +1,5 @@
-#installer/pacstrap/installer.py
+#installer/pacstrap/nstaller.py
+
 import os
 import subprocess
 import time
@@ -22,14 +23,11 @@ def install_packages(files,extra_pkgs):
 
     # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
     cmd = ["pacstrap", "-K", "/mnt"] + full_list
-    print(extra_pkgs)
-    print(cmd)
-    sys.exit(1) #just for testing to see what the final command is
     task_start = time.time()
 
     try:
         subprocess.run(cmd, check=True)
-        print("\nInstallation complete.")
+        print("\nPackage installation completed.")
     except subprocess.CalledProcessError:
         print("\nError installing, pacstrap failed.")
         sys.exit(1)

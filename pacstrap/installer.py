@@ -13,7 +13,7 @@ def install_packages(files,extra_pkgs):
                 custom_pkgs.extend(f.read().splitlines())
                 
     full_list = list(set(base_pkgs + [p.strip() for p in custom_pkgs if p.strip()] + extra_pkgs))
-
+    
     if not full_list:
         print("No packages selected.")
         return
@@ -22,6 +22,7 @@ def install_packages(files,extra_pkgs):
     
     # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
     cmd = ["pacstrap", "-K", "/mnt"] + full_list
+    print(extra_pkgs)
     print(cmd)
     sys.exit(1) #just for testing to see what the final command is
     task_start = time.time()
@@ -34,3 +35,4 @@ def install_packages(files,extra_pkgs):
         sys.exit(1)
 
     print(f"Total time: {time.time() - task_start:.2f} seconds")
+

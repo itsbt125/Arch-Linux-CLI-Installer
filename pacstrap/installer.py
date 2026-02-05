@@ -51,7 +51,10 @@ def install_packages(files, extra_pkgs=[]):
     
     print("\nStarting pacstrap...")
     try:
-        subprocess.run(cmd, check=True)
+        #subprocess.run(cmd, check=True)
+        print(cmd)
+        print(raw_list)
+        print(full_list)
         print("\nInstallation complete.")
     except subprocess.CalledProcessError:
         print("\n[ERROR] Pacstrap failed.")

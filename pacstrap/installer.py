@@ -1,47 +1,56 @@
-#installer.py
 import os
 import subprocess
 import time
 import sys
 
-def install_packages(files,extra_pkgs):
-    base_pkgs = ["linux", "linux-headers", "linux-firmware", "base","sudo", "nano", "grub", "efibootmgr","networkmanager", "plasma-nm", "pipewire", "pipewire-alsa","sddm", "plasma-meta", "konsole", "dolphin", "firefox"] # Required packages
+def enable_multilib(conf_path):
+    sed_snip = r'/^# *\[multilib\]/,/^# *Include/ s/^# *//'
+    try:
+        subprocess.run(["sed", "-i", sed_snip, conf_path], check=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+def install_packages(files, extra_pkgs):
+    base_pkgs = ["linux", "linux-headers", "linux-firmware", "base", "sudo", 
+                 "nano", "grub", "efibootmgr", "networkmanager", "plasma-nm", 
+                 "pipewire", "pipewire-alsa", "sddm", "plasma-meta", 
+                 "konsole", "dolphin", "firefox"]
+    
     custom_pkgs = []
     for file in files:
         if os.path.exists(file):
             with open(file, "r") as f:
                 custom_pkgs.extend(f.read().splitlines())
+
     full_list = list(set(base_pkgs + [p.strip() for p in custom_pkgs if p.strip()] + extra_pkgs))
+
     if not full_list:
         print("No packages selected.")
         return
-    print(f"Starting install of {len(full_list)} packages.")
-    # Example: pacstrap -K /mnt pkg1 pkg2 pkg3 ...
-    """
+
+    print(f"Preparing to install {len(full_list)} packages...")
+
+    if enable_multilib("/etc/pacman.conf"):
+        subprocess.run(["pacman", "-Sy"], check=True)
+    else:
+        print("Warning: Failed to enable multilib on host.")
+
     try:
-        subprocess.run(["pacstrap","-K","/mnt","linux"],check=True)
+        subprocess.run(["pacstrap", "-K", "/mnt", "base"], check=True)
     except subprocess.CalledProcessError:
-        print("Error installing critical module, pacstrap failed and install is terminating.")
         sys.exit(1)
-    """
-    # We need to install something that's required first so we can activate multilib (create the path)
-    """
-    sed_snip = r'/^# *\[multilib\]/,/^# *Include/ s/^# *//'
-    sed_cmd = ["sed","-i",sed_snip,"/mnt/etc/pacman.conf"]
-    try:
-        subprocess.run(sed_cmd,check=True)
-    except subprocess.CalledProcessError:
-        print("Error enabling multilib, terminating installation process.")
-        sys.exit(1)
-    """
-    cmd = ["pacstrap", "-K", "/mnt"] + full_list
+
+    if not enable_multilib("/mnt/etc/pacman.conf"):
+         print("Error enabling multilib on target system.")
+         sys.exit(1)
+
     task_start = time.time()
     try:
-        subprocess.run(cmd, check=True)
-        print("\nInstallation complete.")
+        subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True)
+        print("\Paclages have completed installation.")
     except subprocess.CalledProcessError:
-        print("\nError installing, pacstrap failed.")
+        print("\nError installing packages.")
         sys.exit(1)
 
     print(f"Total time: {time.time() - task_start:.2f} seconds")
-

@@ -174,9 +174,9 @@ def start_install():
     
     # Exit the environment
     elapsed = time.time() - start_time
-    print(f"\n[SUCCESS] Installed in {elapsed:.2f} seconds.")
-    print("Rebooting in 5 seconds...")
-    time.sleep(5)
+    print(f"\nArch Linux successfully installed in {elapsed:.2f} seconds.")
+    print("Rebooting in 3 seconds...")
+    time.sleep(3)
     subprocess.run(["reboot", "now"])
 
 if __name__ == "__main__":

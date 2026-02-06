@@ -27,3 +27,4 @@ rustup
 qemu-full
 virt-manager
 obs-studio
+fastfetch

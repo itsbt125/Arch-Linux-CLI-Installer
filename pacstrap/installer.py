@@ -48,9 +48,9 @@ def install_packages(files, extra_pkgs):
     task_start = time.time()
     try:
         subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True)
-        print("\Paclages have completed installation.")
+        print("Packages have completed installation.")
     except subprocess.CalledProcessError:
-        print("\nError installing packages.")
+        print("Error installing packages.")
         sys.exit(1)
 
     print(f"Total time: {time.time() - task_start:.2f} seconds")

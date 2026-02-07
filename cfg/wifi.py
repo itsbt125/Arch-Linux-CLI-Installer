@@ -8,7 +8,7 @@ def run_command(cmd):
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout.strip()
     except Exception as e:
-        print(f"Error running command: {e}")
+        print(f"[!] Error running command: {e}")
         return ""
 
 def get_wireless_device():
@@ -24,7 +24,7 @@ def get_wireless_device():
     return "wlan0"
 
 def get_wifi_networks(device):
-    print(f"Scanning for networks on {device}...")
+    print(f"[-] Scanning for networks on {device}...")
     
     subprocess.run(["iwctl", "station", device, "scan"], stdout=subprocess.DEVNULL)
     time.sleep(3) # Wait for results
@@ -63,18 +63,18 @@ def get_wifi_networks(device):
 
 def connect_to_wifi():
     device = get_wireless_device()
-    print(f"Detected Wireless Device: {device}")
+    print(f"[-] Detected Wireless Device: {device}")
     
     while True:
         networks = get_wifi_networks(device)
         
         if not networks:
-            print("No networks found. (Is the switch on?)")
+            print("[!] No networks found. (Is the switch on?)")
             if input("Retry? (y/n): ").lower() != 'y':
                 return False
             continue
 
-        print("\nWi-Fi Network Selection")
+        print("[-] Wi-Fi Network Selection")
         for i, net in enumerate(networks):
             mark = "*" if net['active'] else " "
             print(f"[{i}] {mark} {net['ssid']} ({net['security']})")
@@ -89,10 +89,10 @@ def connect_to_wifi():
         try:
             target = networks[int(choice)]
         except:
-            print("Invalid index.")
+            print("[!] Invalid index.")
             continue
 
-        print(f"Connecting to {target['ssid']}...")
+        print(f"[-] Connecting to {target['ssid']}...")
         
         cmd = ["iwctl", "station", device, "connect", target['ssid']]
         
@@ -102,16 +102,16 @@ def connect_to_wifi():
         
         try:
             subprocess.run(cmd, check=True)
-            print("Connection command sent. Verifying...")
+            print("[-] Connection command sent. Verifying...")
             time.sleep(3)
             
             # Verify internet
             ping = subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL)
             if ping.returncode == 0:
-                print("[SUCCESS] Connected!")
+                print("[-] Connected!")
                 return True
             else:
-                print("[WARNING] Connected to router, but no internet.")
+                print("[!] Connected to router, but no internet.")
                 return True # Technically connected
         except subprocess.CalledProcessError:
-            print("[ERROR] Connection failed.")
+            print("[!] Connection failed.")

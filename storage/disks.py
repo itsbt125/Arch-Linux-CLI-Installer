@@ -11,7 +11,7 @@ def get_disks():
             if not d['name'].startswith('loop')]
 
 def prepare_drive(disk_path, use_swap=False, swap_size="4"):
-    print(f"PREPARING {disk_path}...")
+    print(f"[-] Preparing {disk_path}...")
 
     layout = "label: gpt\nsize=1G, type=U\n" 
     
@@ -26,7 +26,7 @@ def prepare_drive(disk_path, use_swap=False, swap_size="4"):
         subprocess.run(["partprobe", disk_path], check=True)
         time.sleep(2) 
     except subprocess.CalledProcessError:
-        print("[ERROR] Partitioning failed!")
+        print("[!] Partitioning failed!")
         return False
 
     sep = "p" if "nvme" in disk_path else ""
@@ -38,18 +38,18 @@ def prepare_drive(disk_path, use_swap=False, swap_size="4"):
     else:
         p_root = f"{disk_path}{sep}2"
 
-    print(f"Formatting Boot: {p_boot}")
+    print(f"[-] Formatting boot: {p_boot}")
     subprocess.run(["mkfs.fat", "-F32", p_boot], check=True)
 
     if use_swap:
-        print(f"Formatting Swap: {p_swap}")
+        print(f"[-] Formatting swap: {p_swap}")
         subprocess.run(["mkswap", p_swap], check=True)
         subprocess.run(["swapon", p_swap], check=True)
 
-    print(f"Formatting Root: {p_root}")
+    print(f"[-] Formatting root: {p_root}")
     subprocess.run(["mkfs.ext4", "-F", p_root], check=True)
 
-    print(f"Mounting {p_root} to /mnt")
+    print(f"[-] Mounting {p_root} to /mnt")
     subprocess.run(["mount", p_root, "/mnt"], check=True)
     
     subprocess.run(["mkdir", "-p", "/mnt/boot"], check=True)

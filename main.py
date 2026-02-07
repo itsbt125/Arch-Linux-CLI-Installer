@@ -83,7 +83,7 @@ def start_install():
         return
 
     # Swap Configuration
-    ask = input("[?] It is recomended to use swap. Would you like to use a swap of 4GB? (y/n): ").strip().lower()
+    ask = input("[?] It is recommended to use swap. Would you like to use a swap of 4GB? (y/n): ").strip().lower()
     if ask == "y" or ask == "yes":
         use_swap = True
         swap_size = "4"
@@ -166,7 +166,7 @@ def start_install():
     print("[-] GRUB successfully installed!")
     # Exit the environment
     elapsed = time.time() - start_time
-    print(f"\n[!] Arch Linux with KDE Plasma successfully installed in {elapsed:.2f} seconds.")
+    print(f"[!] Arch Linux with KDE Plasma successfully installed in {elapsed:.2f} seconds.")
     time.sleep(1)
     input("[-] Press enter to reboot")
     subprocess.run(["reboot", "now"])

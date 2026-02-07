@@ -1,5 +1,10 @@
-An intuitive, easy to use Python based command line Arch Linux installer.
+**Arch Linux CLI Installer**
 
-Q. How can I use this?
+An intuitive, Python-based command-line installer for Arch Linux, designed with beginners in mind.
+This tool allows you to configure and install Arch with ease while setting up a functional system in the background. It removes the complexity Arch is known for while keeping the lightweight nature.
 
-A. Boot into your Arch ISO, connect to the internet if you haven't already to run `pacman -Sy git && git clone https://github.com/itsbt125/Arch-Linux-CLI-Installer && cd test-installer-build && python main.py`
+
+How to use this:
+1. Boot into the Arch Linux live environment using your installation medium.
+2. If ethernet is unavailable, connect to the internet using `iwctl` for WiFi. I suggest checking the offical Archwiki page on this.
+3. Run the following one-line command `pacman -Sy git && git clone https://github.com/itsbt125/Arch-Linux-CLI-Installer && cd Arch-Linux-CLI-Installer && python main.py`

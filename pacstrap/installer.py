@@ -32,7 +32,7 @@ def install_packages(files, extra_pkgs):
     print(f"Preparing to install {len(full_list)} packages...")
 
     if enable_multilib("/etc/pacman.conf"):
-        subprocess.run(["pacman", "-Sy"], check=True)
+        subprocess.run(["pacman", "-Sy","--noconfirm"], check=True)
     else:
         print("Warning: Failed to enable multilib on host.")
 

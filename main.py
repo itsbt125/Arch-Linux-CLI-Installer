@@ -128,7 +128,7 @@ def start_install():
     print(f"Timezone: {timezone}")
     print(f"Keymap: {keymap}")
     
-    if input("[?] Type 'YES, PROCEED WITH INSTALL.' to confirm install: \n") != "YES, PROCEED WITH ISNTALL.":
+    if input("[?] Type 'YES, PROCEED WITH INSTALL.' to confirm install: \n") != "YES, PROCEED WITH INSTALL.":
         print("[!] Aborting install, changes have not been made.")
         return
     print("[-] Installation process has started.")

@@ -131,6 +131,7 @@ def start_install():
     if input("[?] Type 'YES' to confirm install: ") != "YES":
         print("[!] Aborting install, changes have not been made.")
         return
+    os.system("clear")
     print("[-] Installation process has started.")
     start_time = time.time()
 
@@ -145,20 +146,13 @@ def start_install():
     drivers_list = drivers.cpu_microcode_packages() + drivers.gpu_driver_packages()
     installer.install_packages(selected_presets, extra_pkgs=drivers_list)
     print("[-] System package installation has completed.")
+
     # Configuration
     print("[-] Installation is almost complete, configuring fstab.")
     config.generate_fstab()
     print("[-] fstab generated.")
     print("[-] Writing hostname, accounts, timezones, and keymaps to host.")
-    config.configure_system(
-        hostname, 
-        username, 
-        password, 
-        root_password, 
-        timezone, 
-        "en_US.UTF-8", 
-        keymap
-    )
+    config.configure_system(hostname,username,password,root_password,timezone,"en_US.UTF-8",keymap)
     print("[-] Writing data to host complete.")
     # Install GRUB as the system's bootloader
     print("[-] Installing GRUB as system bootloader.")
@@ -168,11 +162,12 @@ def start_install():
     elapsed = time.time() - start_time
     print(f"[!] Arch Linux with KDE Plasma successfully installed in {elapsed:.2f} seconds.")
     time.sleep(1)
-    input("[-] Press enter to reboot")
+    input("[-] Press enter to reboot, your Linux journey starts here!")
     subprocess.run(["reboot", "now"])
 
 if __name__ == "__main__":
     if os.geteuid() != 0:
-        print("[!] Please run this script as root.")
+        print("[!] Please run with elevated permissions.")
     else:
+        os.system("clear") # this is a linux installer so we don't need cls btw (lol)
         start_install()

@@ -32,12 +32,12 @@ def install_packages(files, extra_pkgs):
     print(f"Preparing to install {len(full_list)} packages...")
 
     if enable_multilib("/etc/pacman.conf"):
-        subprocess.run(["pacman", "-Sy","--noconfirm"], check=True)
+        subprocess.run(["pacman", "-Sy","--noconfirm"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     else:
         print("Warning: Failed to enable multilib on host.")
 
     try:
-        subprocess.run(["pacstrap", "-K", "/mnt", "base"], check=True)
+        subprocess.run(["pacstrap", "-K", "/mnt", "base"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
         sys.exit(1)
 
@@ -47,7 +47,7 @@ def install_packages(files, extra_pkgs):
 
     task_start = time.time()
     try:
-        subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True)
+        subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         print("Packages have completed installation.")
     except subprocess.CalledProcessError:
         print("Error installing packages.")

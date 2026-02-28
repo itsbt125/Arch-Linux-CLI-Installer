@@ -12,8 +12,6 @@ from cfg import drivers
 from cfg import wifi 
 from cfg import cmd
 
-print(config.VERBOSE)
-sys.exit(1)
 def check_internet():
     try:
         #subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
@@ -24,7 +22,8 @@ def check_internet():
 
 def get_valid_options(command):
     try:
-        result = cmd(command, check=True, text=True, capture_output=True)        return set(result.stdout.strip().splitlines())
+        result = cmd(command, check=True, text=True, capture_output=True)        
+        return set(result.stdout.strip().splitlines())
     except subprocess.CalledProcessError:   
         return set()
 

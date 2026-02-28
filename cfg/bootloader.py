@@ -6,7 +6,7 @@ from cfg.cmds import cmd
 def install_grub(disk_path):
     print("[-] Installing GRUB...")
     
-    # Check if we are actually in UEFI mode (optional safety check)
+    # Check if we are actually in UEFI mode
     if not os.path.exists("/sys/firmware/efi/efivars"):
         print("This system is NOT booted into UEFI mode, aborting install.")
         sys.exit(0)
@@ -29,9 +29,9 @@ def install_grub(disk_path):
         #subprocess.run(cmd_config, check=True)
         cmd(cmd_config)
         
-        print("GRUB installed successfully.")
+        print("[-] GRUB installed successfully.")
         return True
 
     except subprocess.CalledProcessError as e:
-        print(f"GRUB installation failed: {e}")
+        print(f"[!] GRUB installation failed: {e}")
         return False

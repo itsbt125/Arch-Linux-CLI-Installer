@@ -15,8 +15,7 @@ from cfg import settings
 
 def check_internet():
     try:
-        #subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-        cmd(["ping","-c","1","archlinux.org"])
+        cmd(["ping","-c","1","google.com"])
         return True
     except subprocess.CalledProcessError:
         return False
@@ -101,7 +100,7 @@ def start_install():
     else:
         use_swap = False
         swap_size = None
-        print("    [-] Not using swap.")
+        print("    [-] Not using swap, this is not recommended.")
     # Hostname & Username/Password (also for root account)
     hostname = input("[?] Please enter a hostname to be used for network identity: ")
     username = input("[?] Enter username for user account: ")
@@ -136,7 +135,7 @@ def start_install():
     settings.VERBOSE = ask.startswith("y")
     print("[-] The following has been configured with the installer")
     print(f"    [-]  Wiping {target} of all data.")
-    print(f"    [-] Packages to download (required packages not shown by installer): {[p.split('/')[-1] for p in selected_presets]}")
+    print(f"    [-] Packages to download (required packages not shown): {[p.split('/')[-1] for p in selected_presets]}")
     print(f"    [-] Timezone: {timezone}")
     print(f"    [-] Keymap: {keymap}")
     print(f"    [-] Using verbose?: {settings.VERBOSE}")
@@ -175,7 +174,6 @@ def start_install():
     # Exit the environment
     elapsed = time.time() - start_time
     print(f"[!] Arch Linux with KDE Plasma successfully installed in {elapsed:.2f} seconds.")
-    time.sleep(1)
     input("[-] Press enter to reboot, your Linux journey starts here!")
     cmd(["reboot","now"])
 if __name__ == "__main__":

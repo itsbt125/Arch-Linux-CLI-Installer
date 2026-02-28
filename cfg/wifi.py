@@ -1,12 +1,10 @@
 import subprocess
-import time
 import sys
 import re
 from cfg.cmds import cmd
 
 def run_command(cmd):
     try:
-        #result = subprocess.run(cmd, capture_output=True, text=True)
         result = cmd(cmd,capture_output=True,text=True)
         return result.stdout.strip()
     except Exception as e:
@@ -27,8 +25,7 @@ def get_wireless_device():
 
 def get_wifi_networks(device):
     print(f"[-] Scanning for networks on {device}...")
-    
-    #subprocess.run(["iwctl", "station", device, "scan"], stdout=subprocess.DEVNULL)
+
     cmd(["iwctl", "station", device, "scan"], show_output=False)    
     output = run_command(["iwctl", "station", device, "get-networks"])
     
@@ -102,19 +99,15 @@ def connect_to_wifi():
             cmd = ["iwctl", "--passphrase", password, "station", device, "connect", target['ssid']]
         
         try:
-            #subprocess.run(cmd, check=True)
             cmd(cmd)
             print("[-] Connection command sent. Verifying...")
-            time.sleep(3)
-            
-            # Verify internet
-            #ping = subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL)
-            ping = cmd(["ping", "-c", "1", "archlinux.org"], show_output=False)            
+            # Verify connection (hopefully it isn't ever down or the installer will fail)
+            ping = cmd(["ping", "-c", "1", "google.com"], show_output=False)            
             if ping.returncode == 0:
                 print("[-] Connected!")
                 return True
             else:
-                print("[!] Connected to router, but no internet.")
-                return True # Technically connected
+                print("[!] Connected to local network, but no internet.")
+                return True # still connected but will probbaly run into issues...
         except subprocess.CalledProcessError:
             print("[!] Connection failed.")

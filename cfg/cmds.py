@@ -6,7 +6,7 @@ def cmd(command, shell=False, show_output=None, check=True, text=True, capture_o
     if show_output is None:
         show_output = settings.VERBOSE
 
-    # if we want to show output, capture it so we can print
+    # if want to show output, capture it so you can even print it
     if show_output is True and capture_output is False:
         capture_output = True
 

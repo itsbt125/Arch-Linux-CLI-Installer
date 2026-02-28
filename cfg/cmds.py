@@ -1,6 +1,6 @@
 import subprocess
-from cfg import config
-def cmd(command, shell=False, show_output=config.VERBOSE, check=True, text=False, capture_output=False, input=None):
+from cfg.settings import VERBOSE
+def cmd(command, shell=False, show_output=VERBOSE, check=True, text=False, capture_output=False, input=None):
     kwargs = {
         "shell": shell,
         "check": check,

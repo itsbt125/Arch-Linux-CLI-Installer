@@ -10,7 +10,7 @@ from cfg import config
 from cfg import bootloader
 from cfg import drivers
 from cfg import wifi 
-from cfg.cmd import cmd
+from cfg.cmds import cmd
 
 def check_internet():
     try:

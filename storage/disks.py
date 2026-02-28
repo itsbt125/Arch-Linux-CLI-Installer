@@ -2,7 +2,7 @@ import subprocess
 import json
 import sys
 import time
-from cfg.cmd import cmd
+from cfg.cmds import cmd
 
 def get_disks():
     result = cmd(["lsblk", "-dno", "NAME,SIZE,MODEL", "--json"],capture_output=True,text=True)

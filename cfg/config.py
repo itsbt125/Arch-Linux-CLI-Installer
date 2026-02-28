@@ -1,8 +1,6 @@
 import subprocess
 from cfg.cmds import cmd
 
-VERBOSE = False
-
 def run_chroot(command): 
     full_cmd = ["arch-chroot", "/mnt"] + command
     try:

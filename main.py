@@ -85,14 +85,14 @@ def start_install():
         return
 
     # Swap Configuration
-    ask = input("[?] It is recommended to use swap. Would you like to use a swap ? (y/n): ").strip().lower()
+    ask = input("[?] It is recommended to use swap. Would you like to use a swap ? (y/n) ").strip().lower()
     if ask == "y" or ask == "yes":
         use_swap = True
         swap_size = 4
-        ask = input("   [?] Would you like your swap to be different than 4GB? (y/n)").strip().lower()
+        ask = input("   [?] Would you like your swap to be different than 4GB? (y/n) ").strip().lower()
         if ask == "y" or ask == "yes":
             try:
-                swap_size = int(input("        [?] How many GB would you like your swap to be?").strip())
+                swap_size = int(input("        [?] How many GB would you like your swap to be? ").strip())
             except ValueError:
                 print("[!] An error occured, aborting installation.")
                 return

@@ -4,7 +4,7 @@ import sys
 from cfg.cmds import cmd
 
 def install_grub(disk_path):
-    print("\n[-] Installing GRUB...")
+    print("[-] Installing GRUB...")
     
     # Check if we are actually in UEFI mode (optional safety check)
     if not os.path.exists("/sys/firmware/efi/efivars"):

@@ -39,7 +39,9 @@ def install_packages(files, extra_pkgs):
         #subprocess.run(["pacman", "-Sy","--noconfirm"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     else:
         print("Warning: Failed to enable multilib on host.")
-
+    
+    print("    [-] Installing system packages, this can take some time depending on your internet speed.")
+    task_start = time.time()
     try:
         cmd(["pacstrap","-K","/mnt","base"])
         #subprocess.run(["pacstrap", "-K", "/mnt", "base"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
@@ -47,11 +49,9 @@ def install_packages(files, extra_pkgs):
         sys.exit(1)
 
     if not enable_multilib("/mnt/etc/pacman.conf"):
-         print("[!] Error enabling multilib on target.")
+         print("[!] Error enabling multilib on target (required to install Steam).")
          sys.exit(1)
 
-    task_start = time.time()
-    print("    [-] Installing system packages, this can take some time depending on your internet speed.")
     try:
         #subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         cmd(["pacstrap", "-K", "/mnt"] + full_list)

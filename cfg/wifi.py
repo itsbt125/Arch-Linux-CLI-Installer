@@ -2,7 +2,7 @@ import subprocess
 import time
 import sys
 import re
-from cfg import cmd
+from cfg.cmd import cmd
 
 def run_command(cmd):
     try:

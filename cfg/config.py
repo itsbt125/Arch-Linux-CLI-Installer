@@ -1,5 +1,5 @@
 import subprocess
-from cfg import cmd
+from cfg.cmd import cmd
 
 VERBOSE = False
 

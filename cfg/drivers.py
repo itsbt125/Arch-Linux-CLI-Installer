@@ -1,5 +1,5 @@
 import subprocess
-from cfg import cmd
+from cfg.cmd import cmd
 
 def cpu_microcode_packages():
     #print("Detecting CPU model for appropriate microcode package installation.")

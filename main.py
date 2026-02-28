@@ -154,13 +154,14 @@ def start_install():
         return
 
     # Install Packages (Base + User Presets + Drivers)
-    print("    [-] Installing syystem packages, this can take some time depending on the speed of your internet.")
+    #print("    [-] Installing system packages, this can take some time depending on the speed of your internet.")
     drivers_list = drivers.cpu_microcode_packages() + drivers.gpu_driver_packages()
     installer.install_packages(selected_presets, extra_pkgs=drivers_list)
-    print("    [-] Package installation has completed.")
+    #print("    [-] Package installation has completed.")
 
     # Configuration
-    print("    [-] Installation is almost complete, configuring fstab.")
+    #print("    [-] Installation is almost complete, configuring fstab.")
+    print("    [-] Generating fstab...")
     config.generate_fstab()
     print("    [-] fstab generated.")
     print("    [-] Writing hostname, accounts, timezones, and keymaps to host.")

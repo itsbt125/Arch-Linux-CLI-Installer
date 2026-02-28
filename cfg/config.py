@@ -3,8 +3,8 @@ from cfg.cmds import cmd
 
 VERBOSE = False
 
-def run_chroot(cmd): 
-    full_cmd = ["arch-chroot", "/mnt"] + cmd
+def run_chroot(command): 
+    full_cmd = ["arch-chroot", "/mnt"] + command
     try:
         #subprocess.run(full_cmd, check=True)
         cmd(full_cmd)

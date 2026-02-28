@@ -32,7 +32,7 @@ def install_packages(files, extra_pkgs):
         print("No packages selected.")
         return
 
-    print(f"Preparing to install {len(full_list)} packages...")
+    #print(f"[-] Preparing to install {len(full_list)} packages ()...")
 
     if enable_multilib("/etc/pacman.conf"):
         cmd(["pacman", "-Sy","--noconfirm"])
@@ -51,6 +51,7 @@ def install_packages(files, extra_pkgs):
          sys.exit(1)
 
     task_start = time.time()
+    print("    [-] Installing system packages, this can take some time depending on your internet speed.")
     try:
         #subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         cmd(["pacstrap", "-K", "/mnt"] + full_list)
@@ -59,4 +60,4 @@ def install_packages(files, extra_pkgs):
         print("[!] Error installing packages.")
         sys.exit(1)
 
-    print(f"[-] Packages installed in: {time.time() - task_start:.2f} seconds")
+    print(f"    [-] Packages installed completed in: {time.time() - task_start:.2f} seconds")

@@ -1,7 +1,7 @@
 import subprocess
 import os
 import sys
-from cfg.cmd import cmd
+from cfg.cmds import cmd
 
 def install_grub(disk_path):
     print("\n[-] Installing GRUB...")

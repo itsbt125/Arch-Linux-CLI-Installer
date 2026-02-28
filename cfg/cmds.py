@@ -1,6 +1,11 @@
 import subprocess
 from cfg.settings import VERBOSE
+
 def cmd(command, shell=False, show_output=VERBOSE, check=True, text=False, capture_output=False, input=None):
+    # if show_output is True, we want to capture and print ourselves
+    if show_output and not capture_output:
+        capture_output = True
+
     kwargs = {
         "shell": shell,
         "check": check,
@@ -8,14 +13,21 @@ def cmd(command, shell=False, show_output=VERBOSE, check=True, text=False, captu
         "capture_output": capture_output,
         "input": input
     }
-    if capture_output is True:
-        show_output = True
+
+    # suppress output if neither show_output nor capture_output
     if not show_output and not capture_output:
         kwargs["stdout"] = subprocess.DEVNULL
         kwargs["stderr"] = subprocess.DEVNULL
 
-    return subprocess.run(command, **kwargs)
+    result = subprocess.run(command, **kwargs)
 
+    if show_output:
+        if result.stdout:
+            print(result.stdout, end="")
+        if result.stderr:
+            print(result.stderr, end="")
+
+    return result
 """
 Usage examples:
 cmd(["ls", "-la"], show_output=False, text=True)        # output as string, check=True

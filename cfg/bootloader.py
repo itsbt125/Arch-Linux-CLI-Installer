@@ -1,9 +1,10 @@
 import subprocess
 import os
 import sys
+from cfg import cmd
 
 def install_grub(disk_path):
-    print("\nInstalling GRUB...")
+    print("\n[-] Installing GRUB...")
     
     # Check if we are actually in UEFI mode (optional safety check)
     if not os.path.exists("/sys/firmware/efi/efivars"):
@@ -18,14 +19,15 @@ def install_grub(disk_path):
             "--bootloader-id=ArchLinux",
             "--recheck"
         ]
-        subprocess.run(cmd_install, check=True)
-
+        #subprocess.run(cmd_install, check=True)
+        cmd(cmd_install)
         cmd_config = [ # Generates grub configuration file
             "arch-chroot", "/mnt",
             "grub-mkconfig",
             "-o", "/boot/grub/grub.cfg"
         ]
-        subprocess.run(cmd_config, check=True)
+        #subprocess.run(cmd_config, check=True)
+        cmd(cmd_config)
         
         print("GRUB installed successfully.")
         return True

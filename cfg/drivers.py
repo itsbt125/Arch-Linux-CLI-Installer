@@ -1,4 +1,5 @@
 import subprocess
+from cfg import cmd
 
 def cpu_microcode_packages():
     #print("Detecting CPU model for appropriate microcode package installation.")
@@ -20,7 +21,7 @@ def gpu_driver_packages():
     #print("Detecting GPU model for appropriate driver package installation.")
     drivers = []
     try:
-        lspci = subprocess.check_output(["lspci"], text=True).lower()
+        lspci = cmd(["lspci"], capture_output=True, text=True).stdout.lower()
     except:
         #print("Failed to run lspci, skipping GPU detection.")
         return[]

@@ -10,18 +10,21 @@ from cfg import config
 from cfg import bootloader
 from cfg import drivers
 from cfg import wifi 
+from cfg import cmd
 
+print(config.VERBOSE)
+sys.exit(1)
 def check_internet():
     try:
-        subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        #subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        cmd(["ping","-c","1","archlinux.org"])
         return True
     except subprocess.CalledProcessError:
         return False
 
 def get_valid_options(command):
     try:
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
-        return set(result.stdout.strip().splitlines())
+        result = cmd(command, check=True, text=True, capture_output=True)        return set(result.stdout.strip().splitlines())
     except subprocess.CalledProcessError:   
         return set()
 
@@ -83,10 +86,17 @@ def start_install():
         return
 
     # Swap Configuration
-    ask = input("[?] It is recommended to use swap. Would you like to use a swap of 4GB? (y/n): ").strip().lower()
+    ask = input("[?] It is recommended to use swap. Would you like to use a swap ? (y/n): ").strip().lower()
     if ask == "y" or ask == "yes":
         use_swap = True
-        swap_size = "4"
+        swap_size = 4
+        ask = input("   [?] Would you like your swap to be different than 4GB? (y/n)").strip().lower()
+        if ask == "y" or ask == "yes":
+            try:
+                swap_size = int(input("        [?] How many GB would you like your swap to be?").strip())
+            except ValueError:
+                print("[!] An error occured, aborting installation.")
+                return
         print(f"    [-] Using {swap_size}GB swap.")
     else:
         use_swap = False
@@ -98,12 +108,12 @@ def start_install():
     password = getpass.getpass(prompt=f"[?] Enter a password for {username}: ")
     password_again = getpass.getpass(prompt=f"[?] Enter the password for {username}, again: ")
     if password != password_again:
-        print("[!] Passwords do not match, aborting installation.")
+        print("[!] Passwords do not match, aborting.")
         return
     root_password = getpass.getpass(prompt=f"[?] Enter new root account password: ")
     password_again = getpass.getpass(prompt=f"[?] Enter new root password, again: ")
     if root_password != password_again:
-        print("[!] Passwords do not match, aborting installation.")
+        print("[!] Passwords do not match, aborting.")
         return
     # Timezone Selection
     timezone = select_from_list("[?] Search for a timezone (e.g. 'America/New_York' or 'CST')", ["timedatectl", "list-timezones"], "America/Los_Angeles","timezone")
@@ -122,49 +132,51 @@ def start_install():
         ask = input("   [?] Would you like gaming focused packages (steam, wine, obs-studio, gamemode, etc) to be installed? (y/n) ").lower()
         if ask == "y" or ask == "yes":
             selected_presets.append("pacstrap/presets/gaming.txt")
-
-    print(f"[-]  Wiping {target} of all data.")
-    print(f"Packages to download: {[p.split('/')[-1] for p in selected_presets]}")
-    print(f"Timezone: {timezone}")
-    print(f"Keymap: {keymap}")
+    ask = input("[?] Use verbose mode during installation to see details? (y/n)").strip().lower()
+    config.VERBOSE = ask.startswith("y")
+    print("[-] The following has been configured with the installer")
+    print(f"    [-]  Wiping {target} of all data.")
+    print(f"    [-] Packages to download (required packages not shown by installer): {[p.split('/')[-1] for p in selected_presets]}")
+    print(f"    [-] Timezone: {timezone}")
+    print(f"    [-] Keymap: {keymap}")
+    print(f"    [-] Using verbose?: {config.VERBOSE}")
     
-    if input("[?] Type 'YES' to confirm install: ") != "YES":
+    if input("[?] Type 'YES' to continue with install by starting changes: ") != "YES":
         print("[!] Aborting install, changes have not been made.")
         return
     os.system("clear")
-    print("[-] Installation process has started.")
+    print("[-] Installation process started.")
     start_time = time.time()
 
     # Start of install process
     # Partition & Format drive(s)
-    print("[-] Partitioning and formatting drives.")
+    print("    [-] Partitioning and formatting drives.")
     if not disks.prepare_drive(target, use_swap, swap_size):
         return
 
     # Install Packages (Base + User Presets + Drivers)
-    print("[-] Installing syystem packages.")
+    print("    [-] Installing syystem packages, this can take some time depending on the speed of your internet.")
     drivers_list = drivers.cpu_microcode_packages() + drivers.gpu_driver_packages()
     installer.install_packages(selected_presets, extra_pkgs=drivers_list)
-    print("[-] System package installation has completed.")
+    print("    [-] Package installation has completed.")
 
     # Configuration
-    print("[-] Installation is almost complete, configuring fstab.")
+    print("    [-] Installation is almost complete, configuring fstab.")
     config.generate_fstab()
-    print("[-] fstab generated.")
-    print("[-] Writing hostname, accounts, timezones, and keymaps to host.")
+    print("    [-] fstab generated.")
+    print("    [-] Writing hostname, accounts, timezones, and keymaps to host.")
     config.configure_system(hostname,username,password,root_password,timezone,"en_US.UTF-8",keymap)
-    print("[-] Writing data to host complete.")
+    print("    [-] Writing data to host complete.")
     # Install GRUB as the system's bootloader
-    print("[-] Installing GRUB as system bootloader.")
+    print("    [-] Installing GRUB as system bootloader.")
     bootloader.install_grub(target)
-    print("[-] GRUB successfully installed!")
+    print("    [-] GRUB successfully installed.")
     # Exit the environment
     elapsed = time.time() - start_time
     print(f"[!] Arch Linux with KDE Plasma successfully installed in {elapsed:.2f} seconds.")
     time.sleep(1)
     input("[-] Press enter to reboot, your Linux journey starts here!")
-    subprocess.run(["reboot", "now"])
-
+    cmd(["reboot","now"])
 if __name__ == "__main__":
     if os.geteuid() != 0:
         print("[!] Please run with elevated permissions.")

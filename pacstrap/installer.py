@@ -2,20 +2,23 @@ import os
 import subprocess
 import time
 import sys
+from cfg import cmd
+from cfg import config
 
 def enable_multilib(conf_path):
     sed_snip = r'/^# *\[multilib\]/,/^# *Include/ s/^# *//'
     try:
-        subprocess.run(["sed", "-i", sed_snip, conf_path], check=True)
+        #subprocess.run(["sed", "-i", sed_snip, conf_path], check=True)
+        cmd(["sed","-i",sed_snip,conf_path])
         return True
     except subprocess.CalledProcessError:
         return False
 
 def install_packages(files, extra_pkgs):
     base_pkgs = ["linux", "linux-headers", "linux-firmware", "base", "sudo", 
-                 "nano", "grub", "efibootmgr", "networkmanager", "plasma-nm", 
+                 "nano", "grub", "efibootmgr","networkmanager", "plasma-nm", 
                  "pipewire", "pipewire-alsa", "sddm", "plasma-meta", 
-                 "konsole", "dolphin", "firefox"]
+                 "konsole", "dolphin", "firefox"] # os-prober removed because dual booting isn't even supported by the partition code yet..
     
     custom_pkgs = []
     for file in files:
@@ -32,25 +35,28 @@ def install_packages(files, extra_pkgs):
     print(f"Preparing to install {len(full_list)} packages...")
 
     if enable_multilib("/etc/pacman.conf"):
-        subprocess.run(["pacman", "-Sy","--noconfirm"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        cmd(["pacman", "-Sy","--noconfirm"])
+        #subprocess.run(["pacman", "-Sy","--noconfirm"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     else:
         print("Warning: Failed to enable multilib on host.")
 
     try:
-        subprocess.run(["pacstrap", "-K", "/mnt", "base"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        cmd(["pacstrap","-K","/mnt","base"])
+        #subprocess.run(["pacstrap", "-K", "/mnt", "base"], check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
         sys.exit(1)
 
     if not enable_multilib("/mnt/etc/pacman.conf"):
-         print("Error enabling multilib on target system.")
+         print("[!] Error enabling multilib on target.")
          sys.exit(1)
 
     task_start = time.time()
     try:
-        subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-        print("Packages have completed installation.")
+        #subprocess.run(["pacstrap", "-K", "/mnt"] + full_list, check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        cmd(["pacstrap", "-K", "/mnt"] + full_list)
+        #print("Packages have completed installation.")
     except subprocess.CalledProcessError:
-        print("Error installing packages.")
+        print("[!] Error installing packages.")
         sys.exit(1)
 
-    print(f"Total time: {time.time() - task_start:.2f} seconds")
+    print(f"[-] Packages installed in: {time.time() - task_start:.2f} seconds")

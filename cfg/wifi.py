@@ -2,10 +2,12 @@ import subprocess
 import time
 import sys
 import re
+from cfg import cmd
 
 def run_command(cmd):
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        #result = subprocess.run(cmd, capture_output=True, text=True)
+        result = cmd(cmd,capture_output=True,text=True)
         return result.stdout.strip()
     except Exception as e:
         print(f"[!] Error running command: {e}")
@@ -26,9 +28,8 @@ def get_wireless_device():
 def get_wifi_networks(device):
     print(f"[-] Scanning for networks on {device}...")
     
-    subprocess.run(["iwctl", "station", device, "scan"], stdout=subprocess.DEVNULL)
-    time.sleep(3) # Wait for results
-    
+    #subprocess.run(["iwctl", "station", device, "scan"], stdout=subprocess.DEVNULL)
+    cmd(["iwctl", "station", device, "scan"], show_output=False)    
     output = run_command(["iwctl", "station", device, "get-networks"])
     
     networks = []
@@ -101,12 +102,14 @@ def connect_to_wifi():
             cmd = ["iwctl", "--passphrase", password, "station", device, "connect", target['ssid']]
         
         try:
-            subprocess.run(cmd, check=True)
+            #subprocess.run(cmd, check=True)
+            cmd(cmd)
             print("[-] Connection command sent. Verifying...")
             time.sleep(3)
             
             # Verify internet
-            ping = subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL)
+            #ping = subprocess.run(["ping", "-c", "1", "archlinux.org"], stdout=subprocess.DEVNULL)
+            ping = cmd(["ping", "-c", "1", "archlinux.org"], show_output=False)            
             if ping.returncode == 0:
                 print("[-] Connected!")
                 return True

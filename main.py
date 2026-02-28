@@ -11,7 +11,7 @@ from cfg import bootloader
 from cfg import drivers
 from cfg import wifi 
 from cfg.cmds import cmd
-from cfg.settings import VERBOSE
+from cfg import settings
 
 def check_internet():
     try:
@@ -133,13 +133,13 @@ def start_install():
         if ask == "y" or ask == "yes":
             selected_presets.append("pacstrap/presets/gaming.txt")
     ask = input("[?] Use verbose mode during installation to see details? (y/n)").strip().lower()
-    VERBOSE = ask.startswith("y")
+    settings.VERBOSE = ask.startswith("y")
     print("[-] The following has been configured with the installer")
     print(f"    [-]  Wiping {target} of all data.")
     print(f"    [-] Packages to download (required packages not shown by installer): {[p.split('/')[-1] for p in selected_presets]}")
     print(f"    [-] Timezone: {timezone}")
     print(f"    [-] Keymap: {keymap}")
-    print(f"    [-] Using verbose?: {config.VERBOSE}")
+    print(f"    [-] Using verbose?: {settings.VERBOSE}")
     
     if input("[?] Type 'YES' to continue with install by starting changes: ") != "YES":
         print("[!] Aborting install, changes have not been made.")

@@ -1,9 +1,9 @@
 import subprocess
-from cfg.settings import VERBOSE
+from cfg import settings
 
-def cmd(command, shell=False, show_output=VERBOSE, check=True, text=False, capture_output=False, input=None):
+def cmd(command, shell=False, show_output=settings.VERBOSE, check=True, text=False, capture_output=False, input=None):
     # if show_output is True, we want to capture and print ourselves
-    print(show_output,VERBOSE)
+    print(show_output,settings.VERBOSE)
     if show_output and not capture_output:
         capture_output = True
 

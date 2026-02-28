@@ -7,7 +7,7 @@ def install_grub(disk_path):
     print("[-] Installing GRUB...")
     
     # Check if we are actually in UEFI mode
-    if not os.path.exists("/sys/firmware/efi/efivars"):
+    if not os.path.exists("/sys/firmware/efi/efivars"): #
         print("This system is NOT booted into UEFI mode, aborting install.")
         sys.exit(0)
     try:

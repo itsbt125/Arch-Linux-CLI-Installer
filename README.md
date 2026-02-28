@@ -8,4 +8,4 @@ Usage steps:
 2. If Ethernet is unavailable, connect to the internet using `iwctl` for WiFi. It's recommended to check the [ArchWiki](https://wiki.archlinux.org/title/Iwd) page for this.
 3. Run the following one-line command ```pacman -Sy git --noconfirm && git clone https://github.com/itsbt125/Arch-Linux-CLI-Installer && cd Arch-Linux-CLI-Installer && python main.py```
 
-![alt text](imgs/1.png) ![alt text](imgs/2.png) ![alt text](imgs/3.png) ![alt text](imgs/4.png)
+![Installer CLI](imgs/1.png) ![Installer CLI](imgs/2.png) ![Installer CLI](imgs/3.png) ![Installer CLI](imgs/4.png) ![SDDM Login Manager Preview](imgs/sddm.png) ![Default KDE Plasma Desktop Preview](imgs/desktop.png)

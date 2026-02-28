@@ -2,7 +2,7 @@ import os
 import subprocess
 import time
 import sys
-from cfg import cmd
+from cfg.cmd import cmd
 from cfg import config
 
 def enable_multilib(conf_path):

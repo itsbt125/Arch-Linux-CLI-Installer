@@ -8,4 +8,8 @@ Usage steps:
 2. If Ethernet is unavailable, connect to the internet using `iwctl` for WiFi. It's recommended to check the [ArchWiki](https://wiki.archlinux.org/title/Iwd) page for this.
 3. Run the following one-line command ```pacman -Sy git --noconfirm && git clone https://github.com/itsbt125/Arch-Linux-CLI-Installer && cd Arch-Linux-CLI-Installer && python main.py```
 
+Note(s):
+1. I haven't added dual boot support yet, `disks.py` is made with a full format of the selected drive in mind. Dual boot support is coming soon.
+2. Alternative desktop environment selection will also be available in the near future!
+
 ![Installer CLI](imgs/1.png) ![Installer CLI](imgs/2.png) ![Installer CLI](imgs/3.png) ![Installer CLI](imgs/4.png) ![SDDM Login Manager Preview](imgs/sddm.png) ![Default KDE Plasma Desktop Preview](imgs/desktop.png)

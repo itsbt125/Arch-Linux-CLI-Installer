@@ -1,10 +1,13 @@
 import subprocess
 from cfg import settings
 
-def cmd(command, shell=False, show_output=settings.VERBOSE, check=True, text=False, capture_output=False, input=None):
-    # if show_output is True, we want to capture and print ourselves
-    print(show_output,settings.VERBOSE)
-    if show_output and not capture_output:
+def cmd(command, shell=False, show_output=None, check=True, text=True, capture_output=False, input=None):
+    # default show_output to settings.VERBOSE
+    if show_output is None:
+        show_output = settings.VERBOSE
+
+    # if we want to show output, capture it so we can print
+    if show_output is True and capture_output is False:
         capture_output = True
 
     kwargs = {
@@ -22,6 +25,7 @@ def cmd(command, shell=False, show_output=settings.VERBOSE, check=True, text=Fal
 
     result = subprocess.run(command, **kwargs)
 
+    # print output if verbose
     if show_output:
         if result.stdout:
             print(result.stdout, end="")
